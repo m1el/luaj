@@ -10,8 +10,8 @@ import lua.value.LDouble;
 import lua.value.LInteger;
 import lua.value.LNil;
 import lua.value.LNumber;
-import lua.value.LValue;
 import lua.value.LString;
+import lua.value.LValue;
 
 /*
 ** Function Prototypes
@@ -67,7 +67,7 @@ public class LoadState {
 	private static final int LUA_TTHREAD		= 8;
 	
 //	/*
-//	** $Id: LoadState.java,v 1.1 2007/06/08 05:11:38 jim_roseborough Exp $
+//	** $Id: LoadState.java,v 1.2 2007/06/27 06:43:33 jim_roseborough Exp $
 //	** load precompiled Lua chunks
 //	** See Copyright Notice in lua.h
 //	*/
@@ -350,7 +350,7 @@ public class LoadState {
 //	}
 	public Proto loadFunction(LString p) throws IOException {
 		Proto f = new Proto(this.L);
-		this.L.push(f);
+//		this.L.push(f);
 		f.source = loadString();
 		f.linedefined = loadInt();
 		f.lastlinedefined = loadInt();
@@ -366,7 +366,7 @@ public class LoadState {
 		// see ldebug.c
 //		 IF (!luaG_checkcode(f), "bad code");
 		
-		 this.L.pop();
+//		 this.L.pop();
 		 return f;
 	}
 //
