@@ -67,7 +67,7 @@ public class LoadState {
 	private static final int LUA_TTHREAD		= 8;
 	
 //	/*
-//	** $Id: LoadState.java,v 1.2 2007/06/27 06:43:33 jim_roseborough Exp $
+//	** $Id: LoadState.java,v 1.3 2007/07/09 01:31:31 ian_farmer Exp $
 //	** load precompiled Lua chunks
 //	** See Copyright Notice in lua.h
 //	*/
@@ -189,14 +189,33 @@ public class LoadState {
 		return new LString( s );
 	}
 	
+	static LNumber longBitsToLuaNumber( long bits ) {
+		if ( ( bits & ( ( 1L << 63 ) - 1 ) ) == 0L ) {
+			return new LInteger( 0 );
+		}
+		
+		int e = (int)((bits >> 52) & 0x7ffL) - 1023;
+		
+		if ( e >= 0 && e < 31 ) {
+			long f = bits & 0xFFFFFFFFFFFFFL;
+			int shift = 52 - e;
+			long intPrecMask = ( 1L << shift ) - 1;
+			if ( ( f & intPrecMask ) == 0 ) {
+				int intValue = (int)( f >> shift ) | ( 1 << e );
+				return new LInteger( ( ( bits >> 63 ) != 0 ) ? -intValue : intValue );
+			}
+		}
+		
+		double value = Double.longBitsToDouble(bits);
+		return new LDouble( value );
+	}
+	
 	LNumber loadNumber() throws IOException {
 		if ( this.luacIsNumberIntegral ) {
 			int value = loadInt();
 			return new LInteger( value );
 		} else {
-			long bits = loadInt64();
-			double value = Double.longBitsToDouble(bits);
-			return new LDouble( value );
+			return longBitsToLuaNumber( loadInt64() );
 		}
 	}
 //
