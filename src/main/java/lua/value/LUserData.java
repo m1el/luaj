@@ -1,7 +1,7 @@
 package lua.value;
 
 public class LUserData extends LValue {
-	public static final LString TYPE_NAME = new LString("userdata");
+	public static final LString TYPE_NAME = new LString(Type.userdata.toString());
 	
 	public final Object m_instance;
 	public LTable m_metatable;

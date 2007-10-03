@@ -6,7 +6,7 @@ public final class LBoolean extends LValue {
 	
 	public static final LBoolean FALSE = new LBoolean("false",false);
 	
-	public static final LString TYPE_NAME = new LString("boolean");
+	public static final LString TYPE_NAME = new LString(Type.bool.toString());
 	
 	private final LString m_name;
 	private final boolean m_value;

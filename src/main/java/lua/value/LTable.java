@@ -21,7 +21,7 @@ import lua.VM;
  */
 public class LTable extends LValue {
 
-	public static final LString TYPE_NAME = new LString("table");
+	public static final LString TYPE_NAME = new LString(Type.table.toString());
 	
 	/**
 	 * Zero-length array to use instead of null, so that we don't need to

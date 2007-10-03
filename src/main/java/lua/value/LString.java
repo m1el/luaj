@@ -25,7 +25,7 @@ import lua.Lua;
  */
 public class LString extends LValue {
 
-	public static final LString TYPE_NAME = new LString("string");
+	public static final LString TYPE_NAME = new LString(Type.string.toString());
 	
 	public final byte[] m_bytes;
 	public final int m_offset;

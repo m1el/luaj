@@ -5,7 +5,7 @@ import lua.VM;
 
 public class LFunction extends LValue {
 
-	public static final LString TYPE_NAME = new LString("function");
+	public static final LString TYPE_NAME = new LString(Type.function.toString());
 	
 	public LString luaAsString() {
 		return new LString( "function: "+hashCode() );

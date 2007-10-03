@@ -3,13 +3,13 @@ package lua.value;
 import lua.Lua;
 
 public class LDouble extends LNumber {
-
+    
 	private final double m_value;
 	
 	public LDouble(double value) {
 		this.m_value = value;
 	}
-
+    
 	public int hashCode() {
 		return (int) m_value;
 	}

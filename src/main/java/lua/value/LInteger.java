@@ -3,7 +3,6 @@ package lua.value;
 import lua.Lua;
 
 public class LInteger extends LNumber {
-
 	private final int m_value;
 	
 	public LInteger(int value) {
@@ -17,7 +16,7 @@ public class LInteger extends LNumber {
 	public static int hashCodeOf( int v ) {
 		return v;
 	}
-	
+    
 	public int luaAsInt() {
 		return m_value;
 	}

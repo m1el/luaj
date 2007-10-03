@@ -1,7 +1,7 @@
 package lua.value;
 
 public class LThread extends LValue {
-	public static final LString TYPE_NAME = new LString("thread");
+	public static final LString TYPE_NAME = new LString(Type.thread.toString());
 	
 	public LString luaGetType() {
 		return TYPE_NAME;
