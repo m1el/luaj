@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package lua;
+package lua.debug;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,16 +30,10 @@ import java.net.URLDecoder;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import lua.GlobalState;
+import lua.StackState;
 import lua.addon.luacompat.LuaCompat;
 import lua.addon.luajava.LuaJava;
-import lua.debug.DebugEvent;
-import lua.debug.DebugEventType;
-import lua.debug.DebugRequest;
-import lua.debug.DebugRequestListener;
-import lua.debug.DebugResponse;
-import lua.debug.DebugStackState;
-import lua.debug.DebugSupport;
-import lua.debug.DebugUtils;
 import lua.io.Closure;
 import lua.io.LoadState;
 import lua.io.Proto;
@@ -55,12 +49,12 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 /**
- * LuaJVM executes a lua program in normal run mode or debug mode. 
+ * StandardLuaJVM executes a lua program in normal run mode or debug mode. 
  * 
  * @author:  Shu Lei
  * @version: 1.0
  */
-public class LuaJVM implements DebugRequestListener {        
+public class StandardLuaJVM implements DebugRequestListener {        
     protected Options options = new Options();
     protected boolean isDebugMode = false;
     protected DebugSupport debugSupport;
@@ -72,8 +66,7 @@ public class LuaJVM implements DebugRequestListener {
     protected boolean isReady = false;
     protected boolean isTerminated = false;
     
-    @SuppressWarnings("static-access")
-    public LuaJVM() {
+    public StandardLuaJVM() {
         options.addOption(OptionBuilder.withArgName("requestPort eventPort").
                                         hasArgs(2).
                                         isRequired(false).                                            
@@ -90,7 +83,7 @@ public class LuaJVM implements DebugRequestListener {
     
     protected void printUsage() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("java LuaJVM", options);            
+        formatter.printHelp("java StandardLuaJVM", options);            
     }
     
     protected void parse(String[] args) throws ParseException {
@@ -165,9 +158,9 @@ public class LuaJVM implements DebugRequestListener {
     }
     
     protected void init() {
-        // reset global states
-        GlobalState.resetGlobals();
-        
+    	//Reset the _G table
+    	GlobalState.resetGlobals();
+    	
         // add LuaJava bindings
         LuaJava.install();        
 
@@ -250,21 +243,22 @@ public class LuaJVM implements DebugRequestListener {
         }
         
         DebugUtils.println("handling request: " + request.toString());
-        switch (request.getType()) {
-            case suspend:
-                DebugResponse status = getDebugState().handleRequest(request);                
-                DebugEvent event = new DebugEvent(DebugEventType.suspendedByClient);
-                debugSupport.fireEvent(event);                
-                return status;
-            case resume:
-                status = getDebugState().handleRequest(request);                
-                event = new DebugEvent(DebugEventType.resumedByClient);
-                debugSupport.fireEvent(event);                
-                return status;
-            case exit:
-                stop();
-            default:
-                return getDebugState().handleRequest(request);
+        DebugRequestType requestType = request.getType();
+        if (DebugRequestType.suspend == requestType) {
+        	DebugResponse status = getDebugState().handleRequest(request);                
+            DebugEvent event = new DebugEvent(DebugEventType.suspendedByClient);
+            debugSupport.fireEvent(event);                
+            return status;
+        } else if (DebugRequestType.resume == requestType) {
+        	DebugResponse status = getDebugState().handleRequest(request);                
+        	DebugEvent event = new DebugEvent(DebugEventType.resumedByClient);
+            debugSupport.fireEvent(event);                
+            return status;
+        } else if (DebugRequestType.exit == requestType) {
+            stop();
+            return DebugResponseSimple.SUCCESS;
+        } else {
+            return getDebugState().handleRequest(request);
         }
     }
     
@@ -291,7 +285,7 @@ public class LuaJVM implements DebugRequestListener {
      * @throws IOException
      */
     public static void main(String[] args) {
-        LuaJVM vm = new LuaJVM();
+        StandardLuaJVM vm = new StandardLuaJVM();
 
         try {
             vm.parse(args);
