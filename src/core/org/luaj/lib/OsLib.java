@@ -123,7 +123,6 @@ public class OsLib extends LFunction {
 	}
 
 	public int invoke( LuaState vm ) {
-		LValue v;
 		long t,t2;
 		int c;
 		String s;

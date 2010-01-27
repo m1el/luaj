@@ -96,6 +96,7 @@ public class LDouble extends LNumber {
 		case Lua.OP_DIV: return LDouble.numberOf( lhs / rhs );
 		case Lua.OP_MOD: return LDouble.numberOf( lhs - Math.floor(lhs/rhs) * rhs );
 		case Lua.OP_POW: return Platform.getInstance().mathPow( LDouble.numberOf(lhs), LDouble.numberOf(rhs));
+		default: break;
 		}
 		LuaState.vmerror( "bad bin opcode" );
 		return null;
@@ -138,6 +139,7 @@ public class LDouble extends LNumber {
 		case Lua.OP_EQ: return lhs == rhs;
 		case Lua.OP_LT: return lhs < rhs;
 		case Lua.OP_LE: return lhs <= rhs;
+		default: break;
 		}
 		LuaState.vmerror( "bad cmp opcode" );
 		return false;

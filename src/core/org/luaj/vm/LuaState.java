@@ -712,7 +712,6 @@ public class LuaState extends Lua {
             case LuaState.OP_CONCAT: {
                 b = LuaState.GETARG_B(i);
                 c = LuaState.GETARG_C(i);
-                int numValues = c - b + 1;
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 for (int j = b, l = 0; j <= c; j++, l++) {
                     this.stack[base + j].luaConcatTo( baos );
@@ -981,8 +980,9 @@ public class LuaState extends Lua {
                     		this.stack[base - n + j - 1]
                             : LNil.NIL);
                 continue;
-            }            
             }
+			default: break;
+			}
         }   
     }
     

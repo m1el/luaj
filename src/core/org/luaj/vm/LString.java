@@ -350,6 +350,7 @@ public class LString extends LValue {
 		case Lua.OP_EQ: return equals(rhs);
 		case Lua.OP_LT: return compareTo(rhs) < 0;
 		case Lua.OP_LE: return compareTo(rhs) <= 0;
+		default: break;
 		}
 		LuaState.vmerror( "bad cmp opcode" );
 		return false;

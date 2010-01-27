@@ -97,6 +97,7 @@ public class LInteger extends LNumber {
 		case Lua.OP_MOD: 
 		case Lua.OP_POW: 
 			return LDouble.luaBinOpDoubleDouble(opcode, m_value, rhs);
+		default: break;
 		}
 		LuaState.vmerror( "bad bin opcode" );
 		return null;
@@ -118,6 +119,7 @@ public class LInteger extends LNumber {
 		case Lua.OP_EQ: return m_value == rhs;
 		case Lua.OP_LT: return m_value < rhs;
 		case Lua.OP_LE: return m_value <= rhs;
+		default: break;
 		}
 		LuaState.vmerror( "bad cmp opcode" );
 		return false;

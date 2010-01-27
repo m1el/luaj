@@ -173,6 +173,7 @@ public class Print extends Lua {
 			else
 				ps.print(a + " " + sbx);
 			break;
+		default: break;
 		}
 		switch (o) {
 		case OP_LOADK:

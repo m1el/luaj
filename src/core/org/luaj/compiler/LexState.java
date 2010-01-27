@@ -478,7 +478,7 @@ public class LexState {
 				lexerror("unfinished string", TK_STRING);
 				continue; /* to avoid warnings */
 			case '\\': {
-				int c;
+				int c = 0;
 				nextChar(); /* do not save the `\' */
 				switch (current) {
 				case 'a': /* bell */

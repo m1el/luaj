@@ -187,6 +187,7 @@ public class DebugLib extends LFunction {
 				case 'c': mask |= LuaState.LUA_MASKCALL; break;
 				case 'l': mask |= LuaState.LUA_MASKLINE; break;
 				case 'r': mask |= LuaState.LUA_MASKRET; break;
+				default: break;
 			}
 		threadVm.sethook(func, mask, count);
 		return 0;
@@ -276,6 +277,7 @@ public class DebugLib extends LFunction {
 					}
 					break;
 				}
+				default: break;
 			}
 		}
 		return 1;
@@ -659,6 +661,8 @@ public class DebugLib extends LFunction {
 			case Lua.OpArgK:
 				if (!(Lua.ISK(r) ? Lua.INDEXK(r) < pt.k.length : r < pt.maxstacksize)) return false;
 				break;
+			default: break;
+
 		}
 		return true;
 	}
@@ -708,6 +712,7 @@ public class DebugLib extends LFunction {
 				}
 				break;
 			}
+			default: break;
 			}
 			if (Lua.testAMode(op)) {
 				if (a == reg)

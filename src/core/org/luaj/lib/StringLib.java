@@ -1102,6 +1102,7 @@ public class StringLib extends LFunction {
 				case '$':
 					if ( poffset + 1 == p.length() )
 						return ( soffset == s.length() ) ? soffset : -1;
+				default: break;
 				}
 				int ep = classend( poffset );
 				boolean m = soffset < s.length() && singlematch( s.luaByte( soffset ), poffset, ep );
