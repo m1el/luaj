@@ -1,5 +1,7 @@
 package org.luaj.vm;
 
+import java.lang.reflect.InvocationTargetException;
+
 import junit.framework.TestCase;
 
 import org.luaj.lib.j2se.CoerceJavaToLua;
@@ -183,5 +185,41 @@ public class LuaJavaCoercionTest extends TestCase {
 		assertEquals( "int-array-array-args 22,33,44,55", vm.tostring(-1) );
 	}
 	
+	public static final class SomeException extends RuntimeException {
+		public SomeException(String message) {
+			super(message);
+		}
+	}
+	
+	public static final class SomeClass {
+		public static void someMethod() {
+			throw new SomeException( "this is some message" );
+		}
+	}
+	
+	public void testExceptionMessage() {
+		String script = "return pcall( luajava.bindClass( \""+SomeClass.class.getName()+"\").someMethod )";
+		vm.getglobal("loadstring");
+		vm.pushstring(script);
+		vm.call(1, 1);
+		vm.call(0, 2);
+		LValue message = vm.poplvalue();
+		LValue status = vm.poplvalue();
+		assertEquals( LBoolean.FALSE, status );		
+		assertEquals( "lua error: "+SomeException.class.getName()+": this is some message", message.toJavaString() );		
+	}
 
+	public void testLuaErrorExceptionCause() {
+		String script = "luajava.bindClass( \""+SomeClass.class.getName()+"\").someMethod()";
+		vm.getglobal("loadstring");
+		vm.pushstring(script);
+		vm.call(1, 1);
+		try {
+			vm.call(0, 2);
+			fail( "call should not have succeeded" );
+		} catch ( LuaErrorException lee ) {
+			Throwable c = lee.getCause();
+			assertEquals( c.getClass(), SomeException.class );
+		}
+	}
 }

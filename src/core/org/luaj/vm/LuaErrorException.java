@@ -31,6 +31,8 @@ package org.luaj.vm;
 public class LuaErrorException extends RuntimeException {
 	
 	private static final String DEFAULT_MESSAGE = "lua error";
+	
+	private Throwable cause;
 
 	/**
 	 * Construct a LuaErrorException with the default message. 
@@ -44,7 +46,8 @@ public class LuaErrorException extends RuntimeException {
 	 * and with the default message. 
 	 */
 	public LuaErrorException(Throwable cause) {
-		this(DEFAULT_MESSAGE+": "+cause);
+		this( DEFAULT_MESSAGE+": "+cause );
+		this.cause = cause;
 	}
 
 	/**
@@ -88,4 +91,13 @@ public class LuaErrorException extends RuntimeException {
 		}
 		return vm.luaV_call_errfunc( message );
 	}
+	
+	/** 
+	 * Get the cause, if any.
+	 */
+	public Throwable getCause() {
+		return cause;
+	}
+
+
 }

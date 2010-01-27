@@ -30,6 +30,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
@@ -121,6 +122,8 @@ public final class LuajavaLib extends LFunction {
 				vm.resettop();
 				vm.pushlvalue( toUserdata( o, clazz ) );
 				
+			} catch (InvocationTargetException ite) {
+				throw new LuaErrorException(ite.getTargetException());
 			} catch (Exception e) {
 				throw new LuaErrorException(e);
 			}
@@ -181,6 +184,8 @@ public final class LuajavaLib extends LFunction {
 				} else {
 					vm.resettop();
 				}
+			} catch (InvocationTargetException ite) {
+				throw new LuaErrorException(ite.getTargetException());
 			} catch (Exception e) {
 				throw new LuaErrorException(e);
 			}
@@ -318,6 +323,8 @@ public final class LuajavaLib extends LFunction {
 				vm.resettop();
 				vm.pushlvalue( CoerceJavaToLua.coerce(result) );
 				return false;
+			} catch (InvocationTargetException ite) {
+				throw new LuaErrorException(ite.getTargetException());
 			} catch (Exception e) {
 				throw new LuaErrorException(e);
 			}
