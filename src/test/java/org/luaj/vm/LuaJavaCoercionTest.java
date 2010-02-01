@@ -1,7 +1,5 @@
 package org.luaj.vm;
 
-import java.lang.reflect.InvocationTargetException;
-
 import junit.framework.TestCase;
 
 import org.luaj.lib.j2se.CoerceJavaToLua;
@@ -222,4 +220,30 @@ public class LuaJavaCoercionTest extends TestCase {
 			assertEquals( c.getClass(), SomeException.class );
 		}
 	}
+	
+	public interface VarArgsInterface {
+		public String varargsMethod( int a, int ... v );
+	}
+	
+	public void testVarArgsProxy() {		
+		String script = "local p = luajava.createProxy( \""+VarArgsInterface.class.getName()+"\", \n"+
+			"{\n" +
+			"	varargsMethod = function(a,list)\n" +
+			"		return tostring(a)" +
+			"..'-'..tostring(list.length)\n" +
+			"..'-'..tostring(list[1])\n" +
+			"..'-'..tostring(list[2])\n" +
+			"	end\n" +
+			"} )\n" +
+			"return p";
+		vm.getglobal("loadstring");
+		vm.pushstring(script);
+		vm.call(1, 1);
+		vm.call(0, 1);
+		Object u = vm.touserdata(-1);
+		VarArgsInterface v = (VarArgsInterface) u;
+		assertEquals( "2-1-3-nil", v.varargsMethod(2, 3) );
+		assertEquals( "4-3-5-6", v.varargsMethod(4, 5, 6, 7) );
+	}
+	
 }
