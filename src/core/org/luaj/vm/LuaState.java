@@ -96,7 +96,7 @@ public class LuaState extends Lua {
     protected int nresults = -1;
     public LValue[] stack = new LValue[LUA_MINSTACK];
     public int cc = -1;
-    public CallInfo[] calls = new CallInfo[LUA_MINCALLS];
+    public CallInfo[] calls;
     protected Stack upvals = new Stack();
 	protected LValue errfunc;
     
@@ -128,7 +128,7 @@ public class LuaState extends Lua {
 	 * passes to the allocator in every call.
 	 */
 	protected LuaState() {
-		_G = new LTable();
+		this ( new LTable() );
 		mainState = this;
 	}
 
@@ -139,6 +139,9 @@ public class LuaState extends Lua {
 	 */
 	LuaState(LTable globals) {
 		_G = globals;
+		calls = new CallInfo[LUA_MINCALLS];
+        for ( int i=0; i<LUA_MINCALLS; i++ )
+        	calls[i] = new CallInfo();
 	}
 	
 	/**
@@ -207,9 +210,11 @@ public class LuaState extends Lua {
         if ( newcc >= calls.length ) {
             CallInfo[] newcalls = new CallInfo[ calls.length * 2 ];
             System.arraycopy( calls, 0, newcalls, 0, cc+1 );
+            for ( int i=calls.length, n=newcalls.length; i<n; i++ )
+            	newcalls[i] = new CallInfo();
             calls = newcalls;
         }
-        calls[newcc] = new CallInfo(c, base, top, resultbase, nresults);
+        calls[newcc].init(c, base, top, resultbase, nresults);
         cc = newcc;
         
         stackClear( top, base + c.p.maxstacksize );        
@@ -865,7 +870,7 @@ public class LuaState extends Lua {
                 	luaV_adjusttop(ci.resultbase + ci.nresults);
 
                 // pop the call stack
-                calls[cc--] = null;
+                calls[cc--].closure = null;
                 
                 // force a reload of the calling context
                 return;

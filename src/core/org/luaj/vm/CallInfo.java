@@ -31,7 +31,10 @@ public class CallInfo {
     public int resultbase;
     public int nresults;
 
-    public CallInfo(LClosure c, int base, int top, int resultoff, int nresults) {
+    CallInfo() {
+    }
+    
+    void init(LClosure c, int base, int top, int resultoff, int nresults) {
         this.closure = c;
         this.base = base;
         this.top = top;
