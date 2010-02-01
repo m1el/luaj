@@ -360,7 +360,8 @@ public class LuaState extends Lua {
 	        
         } finally {
         	this.base = oldbase;
-        	this.cc = oldcc;
+        	while ( this.cc > oldcc )
+                calls[cc--].closure = null;
         }
     }
 
@@ -434,7 +435,8 @@ public class LuaState extends Lua {
             return 0;
         } catch ( Throwable t ) {
             this.base = oldbase;
-            this.cc = oldcc;
+        	while ( this.cc > oldcc )
+                calls[cc--].closure = null;
             closeUpVals(oldtop);  /* close eventual pending closures */
             String s = t.getMessage();
             resettop();
