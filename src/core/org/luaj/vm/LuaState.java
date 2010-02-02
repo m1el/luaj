@@ -815,7 +815,7 @@ public class LuaState extends Lua {
                 this.base = ci.resultbase;
                 luaV_settop_fillabove( base + b );
                 this.nresults = ci.nresults;
-                --cc;
+                calls[cc--].closure = null;
                 
                 // make or set up the call
                 try {
