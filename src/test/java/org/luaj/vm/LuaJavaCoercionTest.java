@@ -222,28 +222,40 @@ public class LuaJavaCoercionTest extends TestCase {
 	}
 	
 	public interface VarArgsInterface {
-		public String varargsMethod( int a, int ... v );
+		public String varargsMethod( String a, String ... v );
+		public String arrayargsMethod( String a, String[] v );
 	}
 	
 	public void testVarArgsProxy() {		
-		String script = "local p = luajava.createProxy( \""+VarArgsInterface.class.getName()+"\", \n"+
+		String script = "return luajava.createProxy( \""+VarArgsInterface.class.getName()+"\", \n"+
 			"{\n" +
-			"	varargsMethod = function(a,list)\n" +
-			"		return tostring(a)" +
-			"..'-'..tostring(list.length)\n" +
-			"..'-'..tostring(list[1])\n" +
-			"..'-'..tostring(list[2])\n" +
-			"	end\n" +
-			"} )\n" +
-			"return p";
+			"	varargsMethod = function(a,...)\n" +
+			"		return table.concat({a,...},'-')\n" +
+			"	end,\n" +
+			"	arrayargsMethod = function(a,array)\n" +
+			"		return tostring(a)..(array and \n" +
+			"			('-'..tostring(array.length)\n" +
+			"			..'-'..tostring(array[1])\n" +
+			"			..'-'..tostring(array[2])\n" +
+			"			) or '-nil')\n" +
+			"	end,\n" +
+			"} )\n";
 		vm.getglobal("loadstring");
 		vm.pushstring(script);
+		vm.call(1, 2);
+		if ( ! vm.toboolean(-2) )
+			fail( vm.tostring(-1) );
 		vm.call(1, 1);
-		vm.call(0, 1);
 		Object u = vm.touserdata(-1);
 		VarArgsInterface v = (VarArgsInterface) u;
-		assertEquals( "2-1-3-nil", v.varargsMethod(2, 3) );
-		assertEquals( "4-3-5-6", v.varargsMethod(4, 5, 6, 7) );
+		assertEquals( "foo", v.varargsMethod("foo") );
+		assertEquals( "foo-bar", v.varargsMethod("foo", "bar") );
+		assertEquals( "foo-bar-etc", v.varargsMethod("foo", "bar", "etc") );
+		assertEquals( "foo-0-nil-nil", v.arrayargsMethod("foo", new String[0]) );
+		assertEquals( "foo-1-bar-nil", v.arrayargsMethod("foo", new String[] {"bar"}) );
+		assertEquals( "foo-2-bar-etc", v.arrayargsMethod("foo", new String[] {"bar","etc"}) );
+		assertEquals( "foo-3-bar-etc", v.arrayargsMethod("foo", new String[] {"bar","etc","etc"}) );
+		assertEquals( "foo-nil", v.arrayargsMethod("foo", null) );
 	}
 	
 }

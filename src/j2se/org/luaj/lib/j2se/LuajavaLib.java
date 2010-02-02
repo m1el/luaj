@@ -75,6 +75,8 @@ public final class LuajavaLib extends LFunction {
 	
 	private static final Map classMetatables = new HashMap(); 
 	
+	private static final int METHOD_MODIFIERS_VARARGS = 0x80;
+	
 	private int id;
 
 	public LuajavaLib() {		
@@ -147,10 +149,21 @@ public final class LuajavaLib extends LFunction {
 						vm.remove( -2 );
 						LValue result;
 						if ( !vm.isnil( -1 ) ) {
+							boolean isvarargs = ((method.getModifiers() & METHOD_MODIFIERS_VARARGS) != 0);
 							int n = ( args != null ) ? args.length : 0;
-							for ( int i=0; i<n; i++ )
-								vm.pushlvalue( CoerceJavaToLua.coerce(args[i]) );
-							vm.call(n, 1);
+							if ( isvarargs ) {								
+								Object o = args[--n];
+								int m = Array.getLength( o );
+								for ( int i=0; i<n; i++ )
+									vm.pushlvalue( CoerceJavaToLua.coerce(args[i]) );
+								for ( int i=0; i<m; i++ )
+									vm.pushlvalue( CoerceJavaToLua.coerce(Array.get(o,i)) );								
+								vm.call(n+m, 1);
+							} else {
+								for ( int i=0; i<n; i++ )
+									vm.pushlvalue( CoerceJavaToLua.coerce(args[i]) );
+								vm.call(n, 1);
+							}
 						}
 						result = vm.poplvalue();
 						return CoerceLuaToJava.coerceArg(result, method.getReturnType());
