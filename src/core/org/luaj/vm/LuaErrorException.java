@@ -86,8 +86,8 @@ public class LuaErrorException extends RuntimeException {
 			if ( vm == null )
 				return message;
 		}
-		if ( level > 0 ) {
-			message = vm.getFileLine(level);
+		if ( level != 0 && message != null ) {
+			message = vm.getFileLine(level)+": "+message;
 		}
 		return vm.luaV_call_errfunc( message );
 	}
