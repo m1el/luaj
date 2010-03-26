@@ -594,16 +594,20 @@ public class LuaState extends Lua {
             // sync up top
             ci.top = top;
         	
+            // print out next bytecode
+        	//Print.printState(this, base, top, base+cl.p.maxstacksize, cl, ci.pc);
+        	
             // allow debug hooks a chance to operate
         	debugHooks( ci.pc );
-            if ( hooksenabled && ! inhook ) {
-            	//Print.printState(this, base, top, base+cl.p.maxstacksize, cl, ci.pc);            
-            	debugBytecodeHooks( ci.pc );
-            }
             
             // advance program counter
             i = code[ci.pc++];
-            
+        	
+            // call hooks after pc is advanced
+            if ( hooksenabled && ! inhook ) {
+            	debugBytecodeHooks( ci.pc-1 );
+            }
+
             // get opcode and first arg
         	o = (i >> POS_OP) & MAX_OP;
     		a = (i >> POS_A) & MAXARG_A;
@@ -766,10 +770,10 @@ public class LuaState extends Lua {
                     luaV_settop_fillabove( base + b );
                 
                 // number of return values we need
-                c = LuaState.GETARG_C(i);
+                n = LuaState.GETARG_C(i) - 1;
 
                 // make or set up the call
-                this.nresults = c - 1;
+                this.nresults = n;
                 if (this.stack[base].luaStackCall(this)) {
                 	
                     // call hook
@@ -783,8 +787,8 @@ public class LuaState extends Lua {
                 // adjustTop only for case when call was completed
                 // and number of args > 0. If call completed but
                 // c == 0, leave top to point to end of results
-                if (c > 0)
-                	luaV_adjusttop(base + c - 1);
+                if (n >= 0)
+                	luaV_adjusttop(base + n);
                 
                 // restore base
                 base = ci.base;
@@ -810,11 +814,14 @@ public class LuaState extends Lua {
                 else
                     b = top - (base + a);
 
+                // number of return values we need
+                n = ci.nresults;
+                
                 // copy call + all args, discard current frame
                 System.arraycopy(stack, base + a, stack, ci.resultbase, b);
                 this.base = ci.resultbase;
                 luaV_settop_fillabove( base + b );
-                this.nresults = ci.nresults;
+                this.nresults = n;
                 calls[cc--].closure = null;
                 
                 // make or set up the call
@@ -839,8 +846,8 @@ public class LuaState extends Lua {
                 // adjustTop only for case when call was completed
                 // and number of args > 0. If call completed but
                 // c == 0, leave top to point to end of results
-                if (ci.nresults >= 0)
-                	luaV_adjusttop(base + ci.nresults);
+                if (n >= 0)
+                	luaV_adjusttop(base + n);
 
                 // force restore of base, etc.
                 return;
