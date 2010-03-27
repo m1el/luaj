@@ -44,7 +44,7 @@ public class LThread extends LValue implements Runnable {
 	
 	public final LuaState vm;
 	private Thread thread;
-	
+
 	static LThread running;
 	public LThread(LFunction c, LTable env) {
 		vm = new LuaState(env);
@@ -77,6 +77,9 @@ public class LThread extends LValue implements Runnable {
 		synchronized ( this ) {
 			try {
 				vm.execute();
+			} catch ( Throwable t ) {
+				vm.settop(0);
+				vm.pushstring(t.getMessage());
 			} finally {
 				status = STATUS_DEAD;
 				this.notify();
