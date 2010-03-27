@@ -97,7 +97,8 @@ public class LoadStateTest extends TestCase {
 		System.out.println("conversion counts: simple,complex="
 				+simpleConversionCount+","+complexConversionCount);
 
-		assertTrue( complexConversionCount >= simpleConversionCount );
+		// ratio needs to be approximately one
+		assertEquals(1, complexConversionCount/simpleConversionCount, 1);
 	}
 
 	private void collectGarbage() throws InterruptedException {
