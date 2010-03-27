@@ -109,7 +109,8 @@ print(string.format("(%08x) (%08d) (%08o)", 255, 255, 255))
 print(string.format("simple%ssimple", " simple "))
 
 specials = "\"specials\": %% \000 \r \n"
-print(string.format("%s\n%q\n", specials, specials))
+local sp = string.format("%s\n%q\n", specials, specials)
+print(string.byte(sp,1,#sp))
 print(string.format("%%"))
 print(string.format("this is a %s long string", string.rep("really, ", 30)))
 	
