@@ -1,6 +1,7 @@
 
 local print,tostring,_G,pcall,ipairs,isnumber = print,tostring,_G,pcall,ipairs,isnumber
 local e,f,g,h,s
+
 print( 'has debug', debug~=nil )
 if not debug then error( 'no debug' ) end
 
@@ -94,7 +95,9 @@ local b = {}
 local mt = {__index={b='ccc'}}
 print( 'a.a='..tostring(a.a)..' a.b='..tostring(a.b)..' b.a='..tostring(b.a)..' b.b='..tostring(b.b)) 
 local s1,x1,y1 = pcall( debug.getmetatable, a )
+print( 's1,x1,y1', s1, x1, y1 )
 local s2,x2,y2 = pcall( debug.setmetatable, a, mt )
+print( 's2,x2,y2', s2, x2, y2 )
 print( 'a.a='..tostring(a.a)..' a.b='..tostring(a.b)..' b.a='..tostring(b.a)..' b.b='..tostring(b.b)) 
 local s3,x3,y3 = pcall( debug.getmetatable, a )
 local s4,x4,y4 = pcall( debug.getmetatable, b )
@@ -114,8 +117,15 @@ print( 'get='..tostring(s4)..','..tostring(x4==nil)..','..tostring(y4) )
 print( 'set='..tostring(s5)..','..tostring(x5==a)..','..tostring(y5) ) 
 print( 'get='..tostring(s6)..','..tostring(x6==nil)..','..tostring(y6) ) 
 print( pcall( debug.getmetatable, 1 ) )
--- print( pcall( debug.setmetatable, 1, {} ) )
--- print( pcall( debug.setmetatable, 1, nil ) )
+s1,x1,y1 = pcall( debug.setmetatable, a, function() end )
+print( 's1,x1,y1', s1, tostring(x1):match("bad argument"), y1 )
+s1,x1,y1 = pcall( debug.setmetatable, a )
+print( 's1,x1,y1', s1, tostring(x1):match("bad argument"), y1 )
+-- not supported
+-- s1,x1,y1 = print( pcall( debug.setmetatable, 1, {} ) )
+-- print( 's1,x1,y1', s1, tostring(x1):match("bad argument"), y1 )
+-- s1,x1,y1 = print( pcall( debug.setmetatable, 1, nil ) )
+-- print( 's1,x1,y1', s1, tostring(x1):match("bad argument"), y1 )
 
 print( '----- debug.getinfo' )
 local printfield = function(tbl, field)
@@ -129,15 +139,17 @@ local printfield = function(tbl, field)
 	end
 	print( '    '..field..': '..tostring(x) )
 end
-local fields = { 'source', 'short_src', 'what', 
+local fields = { 'short_src', 'what', 
 	'currentline', 'linedefined', 'lastlinedefined', 
-	'nups', 'func', 'activelines' } 
+	'nups', 'func', } 
 local printinfo = function(...)
 	for i,a in ipairs(arg) do
 		if type(a) == 'table' then
 			for j,field in ipairs(fields) do
 				printfield( a, field)
 			end
+			printfield( 'source', type(a.source) )
+			printfield( 'activelines', type(a.activelines) )
 		else
 			print( tostring(a) )
 		end

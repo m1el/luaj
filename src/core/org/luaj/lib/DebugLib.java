@@ -332,18 +332,13 @@ public class DebugLib extends LFunction {
 
 	protected int setmetatable(LuaState vm) {
 		LValue object = vm.topointer(1);
-		try {
-			if ( ! vm.isnoneornil(2) )
-				object.luaSetMetatable(vm.checktable(3));
-			else
-				object.luaSetMetatable(null);
-			vm.pushboolean(true);
-			return 1;
-		} catch ( LuaErrorException e ) {
-			vm.pushboolean(false);
-			vm.pushstring(e.toString());
-			return 2;
-		}
+		vm.checkany(2);
+		if ( ! vm.isnil(2) )
+			object.luaSetMetatable(vm.checktable(2));
+		else
+			object.luaSetMetatable(null);
+		vm.pushboolean(true);
+		return 1;
 	}
 
 	protected int getregistry(LuaState vm) {
