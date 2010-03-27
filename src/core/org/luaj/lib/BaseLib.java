@@ -281,6 +281,7 @@ public class BaseLib extends LFunction {
 			LTable t = vm.checktable(2);
 			if ( vm.isnumber(1) && vm.tointeger(1) == 0 ) {
 				vm._G = t;
+				return 0;
 			} else { 
 				LValue f = getfunc(vm, false);
 				if ( (!(f instanceof LClosure)) || ! f.luaSetEnv(t) )

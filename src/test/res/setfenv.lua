@@ -9,13 +9,15 @@ local pcall = pcall
 local create = coroutine.create
 local resume = coroutine.resume
 local seeall = package.seeall
+local type = type
 
 -- unit tests for getfenv, setfenv
 local function f3(level,value)
 	if value then
 		local t = {abc=value}
 		seeall(t)
-		setfenv( level, t )
+		local r = { setfenv( level, t ) }
+		print( 'returned: ', #r, type(r[1]) )
 	end
 	return abc         
 end
