@@ -221,6 +221,13 @@ local tryfunc = function(hook,mask,func,arg)
 	return x,f,h,m
 end
 
+-- hook function tail call bug
+local foo = function() return os.time() end
+print( 'foo, before', type(foo()) )
+debug.sethook( function() end, 'c' )
+print( 'foo, after', type(foo()) )
+debug.sethook( nil )
+
 local tryhooks = function(mask)
 	local s1,a1,b1,c1,d1 = pcall( tryfunc, hook, mask, f, 333 )
 	print( 'hook = '..mask..' -> '.. 
@@ -235,5 +242,7 @@ tryhooks("r")
 tryhooks("l")
 tryhooks("crl")
 --]]
+
+
 
  
