@@ -24,6 +24,7 @@ package org.luaj.lib;
 import java.io.IOException;
 
 import org.luaj.vm.LFunction;
+import org.luaj.vm.LInteger;
 import org.luaj.vm.LString;
 import org.luaj.vm.LTable;
 import org.luaj.vm.LValue;
@@ -123,7 +124,7 @@ public class OsLib extends LFunction {
 	}
 
 	public int invoke( LuaState vm ) {
-		long t,t2;
+		double t,t2;
 		int c;
 		String s;
 		try {
@@ -136,12 +137,12 @@ public class OsLib extends LFunction {
 					return 1;
 				case DATE:
 					s = vm.optstring(1, null);
-					t = vm.optlong(2,-1);
-					vm.pushlvalue( date(s, t==-1? System.currentTimeMillis(): t) );
+					t = vm.optnumber(2,LInteger.valueOf(-1)).toJavaDouble();
+					vm.pushlvalue( date(s, t==-1? System.currentTimeMillis()/1000.: t) );
 					return 1;
 				case DIFFTIME:
-					t2 = vm.checklong(1);
-					t = vm.checklong(2);
+					t2 = vm.checkdouble(1);
+					t = vm.checkdouble(2);
 					vm.pushnumber(difftime(t2,t));
 					return 1;
 				case EXECUTE:
@@ -203,8 +204,8 @@ public class OsLib extends LFunction {
 	 * @param t1
 	 * @return diffeence in time values, in seconds
 	 */
-	protected double difftime(long t2, long t1) {
-		return (t2 - t1) / 1000.;
+	protected double difftime(double t2, double t1) {
+		return t2 - t1;
 	}
 
 	/**
@@ -231,8 +232,8 @@ public class OsLib extends LFunction {
 	 * @return a LString or a LTable containing date and time, 
 	 * formatted according to the given string format.
 	 */
-	protected LValue date(String format, long time) {
-		return LString.valueOf( new java.util.Date(time).toString() );
+	protected LValue date(String format, double time) {
+		return LString.valueOf( new java.util.Date((long)(time*1000)).toString() );
 	}
 
 	/** 
@@ -308,7 +309,7 @@ public class OsLib extends LFunction {
 	 * cannot be honored.
 	 */
 	protected String setlocale(String locale, String category) {
-		return null;
+		return "C";
 	}
 
 	/**

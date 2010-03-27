@@ -30,7 +30,7 @@ import org.luaj.vm.LTable;
  * Implementation of the lua os library for J2se    
  */
 public class J2seOsLib extends OsLib {
-	public static int EXEC_IOEXCEPTION = -1;
+	public static int EXEC_IOEXCEPTION = 1;
 	public static int EXEC_INTERRUPTED = -2;
 	public static int EXEC_ERROR       = -3;
 	
@@ -73,7 +73,11 @@ public class J2seOsLib extends OsLib {
 	}
 
 	protected void remove(String filename) throws IOException {
-		new File(filename).delete();
+		File f = new File(filename);
+		if ( ! f.exists() )
+			throw new IOException(filename+": No such file or directory");
+		if ( ! f.delete() )
+			throw new IOException(filename+": Failed to delete");
 	}
 
 	protected void rename(String oldname, String newname) throws IOException {
