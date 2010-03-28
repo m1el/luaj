@@ -164,8 +164,11 @@ checkallerrors('unpack',{sometable,somenumber,nonnumber},'bad argument #3')
 
 -- xpcall
 banner('xpcall')
-checkallpass('xpcall', {notanil,nonfunction})
 checkallpass('xpcall', {notanil,{function(...)return 'aaa', 'bbb', #{...} end}})
 checkallerrors('xpcall',{anylua},'bad argument #2')
+testxpcall = function(...) 
+	return assert( xpcall(...) )
+end
+checkallerrors('testxpcall', {nonfunction,nonfunction},'error in error handling')
 
 
