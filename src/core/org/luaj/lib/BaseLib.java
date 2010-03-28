@@ -322,7 +322,7 @@ public class BaseLib extends LFunction {
 				long used = rt.totalMemory() - rt.freeMemory();
 				result = (int) (used >> 10);
 			} else {
-				vm.argerror(2,"gc op");
+				vm.argerror(1,"gc op");
 			}
 			vm.pushnumber(result);
 			return 1;
@@ -472,8 +472,8 @@ public class BaseLib extends LFunction {
 
 	// return true if loaded, false if error put onto stack
 	private boolean load(LuaState vm) {
-		LFunction chunkPartLoader = vm.checkfunction(2);
-		String chunkname = vm.optstring(3,"=(load)");
+		LFunction chunkPartLoader = vm.checkfunction(1);
+		String chunkname = vm.optstring(2,"=(load)");
 		
 		// load all the parts
 		LClosure c = (LClosure) chunkPartLoader;
