@@ -228,6 +228,13 @@ debug.sethook( function() end, 'c' )
 print( 'foo, after', type(foo()) )
 debug.sethook( nil )
 
+-- hook function varargs bug
+local function printarg (...)
+	print( select(6,...) )
+end
+debug.sethook( function() end, 'c' )
+printarg( 1,2,3,4,5,6,7,8,9,10,11,12,13,14 )
+
 local tryhooks = function(mask)
 	local s1,a1,b1,c1,d1 = pcall( tryfunc, hook, mask, f, 333 )
 	print( 'hook = '..mask..' -> '.. 

@@ -595,7 +595,7 @@ public class LuaState extends Lua {
             ci.top = top;
         	
             // print out next bytecode
-        	//Print.printState(this, base, top, base+cl.p.maxstacksize, cl, ci.pc);
+        	// Print.printState(this, base, top, base+cl.p.maxstacksize, cl, ci.pc);
         	
             // allow debug hooks a chance to operate
         	debugHooks( ci.pc );
@@ -2367,8 +2367,11 @@ public class LuaState extends Lua {
 	public LValue luaV_call_index(LFunction function, LValue table, LValue key) {
         int oldtop = top;
         try {
-        	if ( cc >= 0 )
-        		top = base + this.calls[cc].closure.p.maxstacksize;
+        	if ( cc >= 0 ) {
+        		int t = base + this.calls[cc].closure.p.maxstacksize;
+        		if ( t > top )
+        			top = t;
+        	}
    	    	pushlvalue(function);
    	    	pushlvalue(table);
    	    	pushlvalue(key);
@@ -2391,8 +2394,11 @@ public class LuaState extends Lua {
 	public LValue luaV_call_newindex(LFunction function, LValue table, LValue key, LValue value) {
         int oldtop = top;
         try {
-        	if ( cc >= 0 )
-        		top = base + this.calls[cc].closure.p.maxstacksize;
+        	if ( cc >= 0 ) {
+        		int t = base + this.calls[cc].closure.p.maxstacksize;
+        		if ( t > top )
+        			top = t;
+        	}
    	    	pushlvalue(function);
    	    	pushlvalue(table);
    	    	pushlvalue(key);
@@ -2418,8 +2424,11 @@ public class LuaState extends Lua {
 		int oldtop = top;
         try {
 	    	inhook = true;
-        	if ( cc >= 0 )
-        		top = base + this.calls[cc].closure.p.maxstacksize;
+        	if ( cc >= 0 ) {
+        		int t = base + this.calls[cc].closure.p.maxstacksize;
+        		if ( t > top )
+        			top = t;
+        	}
   	    	pushlvalue(errfunc);
     		pushstring(message);
    	    	call(1,1);
@@ -2529,6 +2538,8 @@ public class LuaState extends Lua {
         int oldcc   = cc;
         int oldnresults = nresults;
         int beyond  = (cc>=0? base+calls[cc].closure.p.maxstacksize: top);
+        if ( beyond < top )
+        	beyond = top;
     	try {
     		inhook = true;
 
