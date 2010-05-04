@@ -73,6 +73,10 @@ public class LDouble extends LNumber {
 		return ( (double) ( (int) m_value ) ) == m_value;
 	}
 	
+	public boolean isValidKey() {
+		return ! Double.isNaN(m_value);
+	}
+	
 	// binary operations on integers, first dispatch
 	public LValue luaBinOpUnknown(int opcode, LValue lhs) {
 		return lhs.luaBinOpDouble( opcode, this.m_value );

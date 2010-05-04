@@ -72,6 +72,11 @@ public class LValue {
 		return false;
 	}
 	
+	/** Return true if this value is is a valid lua key, false otherwise */
+	public boolean isValidKey() {
+		return true;
+	}
+	
 	// perform a lua call, return true if the call is to a lua function, false
 	// if it ran to completion.
 	public boolean luaStackCall(LuaState vm) {

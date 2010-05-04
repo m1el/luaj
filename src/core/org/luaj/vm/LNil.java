@@ -33,6 +33,10 @@ public final class LNil extends LValue {
 		return true;
 	}
 
+	public boolean isValidKey() {
+		return false;
+	}
+	
 	public boolean toJavaBoolean() {
 		return false;
 	}
