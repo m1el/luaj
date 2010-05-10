@@ -265,7 +265,7 @@ public class IoLib extends LFunction {
 				setresult(vm, openProgram(vm.checkstring(1),vm.optstring(2, "r")));				
 				break;
 			case IO_READ:
-				checkopen(vm, INPUT);
+				checkopen(vm, input(vm));
 				ioread( vm, INPUT );
 				break;
 			case IO_TMPFILE:
@@ -452,15 +452,21 @@ public class IoLib extends LFunction {
 			return LNil.NIL;
 		return new LString(b, 0, r);
 	}
-	public static LValue freaduntil(File f,int delim) throws IOException {
+	public static LValue freaduntil(File f,boolean lineonly) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		int c;
 		try {
-			while ( true ) { 
-				c = f.read();
-				if ( c < 0 || c == delim )
-					break;
-				baos.write(c);
+			if ( lineonly ) {
+				loop: while ( (c = f.read()) > 0 ) { 
+					switch ( c ) {
+					case '\r': break;
+					case '\n': break loop;
+					default: baos.write(c); break;
+					}
+				}
+			} else {
+				while ( (c = f.read()) > 0 ) 
+					baos.write(c);
 			}
 		} catch ( EOFException e ) {
 			c = -1;
@@ -470,14 +476,14 @@ public class IoLib extends LFunction {
 			(LValue) new LString(baos.toByteArray());
 	}
 	public static LValue freadline(File f) throws IOException {
-		return freaduntil(f,'\n');
+		return freaduntil(f,true);
 	}
 	public static LValue freadall(File f) throws IOException {
 		int n = f.remaining();
 		if ( n >= 0 ) {
 			return freadbytes(f, n);
 		} else {
-			return freaduntil(f,-1);
+			return freaduntil(f,false);
 		}
 	}
 	public static Double freadnumber(File f) throws IOException {
