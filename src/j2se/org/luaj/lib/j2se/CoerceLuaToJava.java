@@ -43,8 +43,7 @@ public class CoerceLuaToJava {
 		public int score( LValue value );
 	};
 	
-	private static Map COERCIONS = new HashMap();
-	private static Coercion OBJECT_COERCION;
+	static Map COERCIONS = new HashMap();
 	
 	static {
 		Coercion boolCoercion = new Coercion() {
@@ -201,7 +200,7 @@ public class CoerceLuaToJava {
 
 
 	/** Score a single parameter, including array handling */
-	private static int scoreParam(LValue a, Class c) {
+	static int scoreParam(LValue a, Class c) {
 		if ( a instanceof LUserData ) {
 			Object o = ((LUserData) a).m_instance;
 			if ( c.isAssignableFrom(o.getClass()) )
@@ -250,12 +249,23 @@ public class CoerceLuaToJava {
 		throw new LuaErrorException("no coercion found for "+a.getClass()+" to "+c);
 	}
 
-	static Object[] coerceArgs(LValue[] suppliedArgs, Class[] parameterTypes) {
-		int nargs = suppliedArgs.length;
+	static Object[] coerceArgs(LValue[] suppliedArgs, Class[] parameterTypes, boolean isvarargs) {
+		int nsupplied = suppliedArgs.length;
 		int n = parameterTypes.length;
+		int nplain = Math.min(isvarargs? n-1: n, nsupplied);
 		Object[] args = new Object[n];
-		for ( int i=0; i<n && i<nargs; i++ )
+		for ( int i=0; i<nplain; i++ )
 			args[i] = coerceArg( suppliedArgs[i], parameterTypes[i] );
+		if ( isvarargs ) {
+			int nvar = Math.max(0, nsupplied - nplain);
+			Class typevar = parameterTypes[n-1].getComponentType();
+			Object array = Array.newInstance(typevar, nvar);
+			for ( int index=0; index<nvar; index++ ) {
+				Object value = coerceArg( suppliedArgs[nplain+index], typevar );
+				Array.set(array, index, value);
+			}
+			args[n-1] = array;
+		}
 		return args;
 	}
 

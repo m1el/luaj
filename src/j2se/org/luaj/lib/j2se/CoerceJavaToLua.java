@@ -38,7 +38,7 @@ public class CoerceJavaToLua {
 		public LValue coerce( Object javaValue );
 	};
 	
-	private static Map COERCIONS = new HashMap();
+	static Map COERCIONS = new HashMap();
 	
 	static {
 		Coercion boolCoercion = new Coercion() {
