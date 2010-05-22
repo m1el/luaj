@@ -285,7 +285,7 @@ public class LexState {
 	}
 
 	LString newstring( byte[] chars, int offset, int len ) {
-		return L.newTString( LString.newStringNoCopy(chars, offset, len) );
+		return L.newTString( LString.newStringCopy(chars, offset, len) );
 	}
 
 	void inclinenumber() {

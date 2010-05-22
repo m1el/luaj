@@ -210,8 +210,8 @@ public class LuaC extends Lua implements LuaCompiler {
 	public LString newTString(LString s) {
 		LString t = (LString) strings.get(s);
 		if ( t == null ) {
-			t = LString.newStringCopy(s);
-			strings.put( t, t );
+			strings.put( s, s );
+			return s;
 		}
 		return t;
 	}
