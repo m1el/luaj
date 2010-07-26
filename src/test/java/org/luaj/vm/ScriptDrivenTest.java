@@ -52,8 +52,10 @@ public class ScriptDrivenTest extends TestCase {
 			state.pushlvalue(c);
 			state.call(0, 0);
 
-			final String actualOutput = new String(outputStream.toByteArray());
-			final String expectedOutput = getExpectedOutput(testName);
+			String actualOutput = new String(outputStream.toByteArray());
+			String expectedOutput = getExpectedOutput(testName);
+			actualOutput = actualOutput.replaceAll("\r\n", "\n");
+			expectedOutput = expectedOutput.replaceAll("\r\n", "\n");
 
 			assertEquals(expectedOutput, actualOutput);
 		} finally {

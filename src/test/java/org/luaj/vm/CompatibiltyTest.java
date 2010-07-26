@@ -104,6 +104,10 @@ public class CompatibiltyTest extends ScriptDrivenTest {
 		runTest("manylocals");
 	}
 
+	public void testManyUpvals() throws IOException, InterruptedException {
+		runTest("manyupvals");
+	}
+
 	public void testMathLib() throws IOException, InterruptedException {
 		runTest("mathlib");
 	}
