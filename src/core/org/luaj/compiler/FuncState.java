@@ -40,8 +40,8 @@ import org.luaj.vm.Platform;
 
 public class FuncState extends LuaC {
 	class upvaldesc {
-		  byte k;
-		  byte info;
+		  short k;
+		  short info;
 	};
 
 	static class BlockCnt {
