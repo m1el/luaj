@@ -27,7 +27,7 @@
 options {
   STATIC = false;
   JDK_VERSION = "1.3";
-  ERROR_REPORTING = false;
+  ERROR_REPORTING = true;
   UNICODE_INPUT = true;
   DEBUG_LOOKAHEAD = false;
   DEBUG_PARSER = false;
@@ -42,6 +42,9 @@ import org.luaj.vm2.ast.*;
 import java.util.*;
 
 public class LuaParser {
+  static {
+  	LuaValue.valueOf(true);
+  }
 
   public static void main(String args[]) throws ParseException {
     LuaParser parser = new LuaParser(System.in);

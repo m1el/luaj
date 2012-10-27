@@ -5,6 +5,9 @@ import org.luaj.vm2.ast.*;
 import java.util.*;
 
 public class LuaParser implements LuaParserConstants {
+  static {
+        LuaValue.valueOf(true);
+  }
 
   public static void main(String args[]) throws ParseException {
     LuaParser parser = new LuaParser(System.in);
@@ -50,6 +53,7 @@ public class LuaParser implements LuaParserConstants {
         ;
         break;
       default:
+        jj_la1[0] = jj_gen;
         break label_1;
       }
       s = Stat();
@@ -58,6 +62,7 @@ public class LuaParser implements LuaParserConstants {
         jj_consume_token(64);
         break;
       default:
+        jj_la1[1] = jj_gen;
         ;
       }
                           b.add(s);
@@ -71,11 +76,13 @@ public class LuaParser implements LuaParserConstants {
         jj_consume_token(64);
         break;
       default:
+        jj_la1[2] = jj_gen;
         ;
       }
                                                               b.add(s);
       break;
     default:
+      jj_la1[3] = jj_gen;
       ;
     }
                                                                               {if (true) return b;}
@@ -118,6 +125,7 @@ public class LuaParser implements LuaParserConstants {
                          {if (true) return s;}
       break;
     default:
+      jj_la1[6] = jj_gen;
       if (jj_2_1(3)) {
         jj_consume_token(FOR);
         n = jj_consume_token(NAME);
@@ -131,6 +139,7 @@ public class LuaParser implements LuaParserConstants {
           e3 = Exp();
           break;
         default:
+          jj_la1[4] = jj_gen;
           ;
         }
         jj_consume_token(DO);
@@ -156,6 +165,7 @@ public class LuaParser implements LuaParserConstants {
                                                  {if (true) return Stat.functiondef(fn,fb);}
           break;
         default:
+          jj_la1[7] = jj_gen;
           if (jj_2_2(2)) {
             jj_consume_token(LOCAL);
             jj_consume_token(FUNCTION);
@@ -173,6 +183,7 @@ public class LuaParser implements LuaParserConstants {
                 el = ExpList();
                 break;
               default:
+                jj_la1[5] = jj_gen;
                 ;
               }
                                                        {if (true) return Stat.localassignment(nl,el);}
@@ -183,6 +194,7 @@ public class LuaParser implements LuaParserConstants {
                        {if (true) return s;}
               break;
             default:
+              jj_la1[8] = jj_gen;
               jj_consume_token(-1);
               throw new ParseException();
             }
@@ -209,6 +221,7 @@ public class LuaParser implements LuaParserConstants {
         ;
         break;
       default:
+        jj_la1[9] = jj_gen;
         break label_2;
       }
       jj_consume_token(ELSEIF);
@@ -226,6 +239,7 @@ public class LuaParser implements LuaParserConstants {
       b3 = Block();
       break;
     default:
+      jj_la1[10] = jj_gen;
       ;
     }
     jj_consume_token(END);
@@ -265,11 +279,13 @@ public class LuaParser implements LuaParserConstants {
         el = ExpList();
         break;
       default:
+        jj_la1[11] = jj_gen;
         ;
       }
                                      {if (true) return Stat.returnstat(el);}
       break;
     default:
+      jj_la1[12] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -286,6 +302,7 @@ public class LuaParser implements LuaParserConstants {
       as = Assign(assertvarexp(pe));
       break;
     default:
+      jj_la1[13] = jj_gen;
       ;
     }
           {if (true) return as==null? Stat.functioncall(assertfunccall(pe)): as;}
@@ -304,6 +321,7 @@ public class LuaParser implements LuaParserConstants {
         ;
         break;
       default:
+        jj_la1[14] = jj_gen;
         break label_3;
       }
       jj_consume_token(66);
@@ -335,6 +353,7 @@ public class LuaParser implements LuaParserConstants {
         ;
         break;
       default:
+        jj_la1[15] = jj_gen;
         break label_4;
       }
       jj_consume_token(67);
@@ -348,6 +367,7 @@ public class LuaParser implements LuaParserConstants {
                                 fn.method=n.image;
       break;
     default:
+      jj_la1[16] = jj_gen;
       ;
     }
                          {if (true) return fn;}
@@ -369,6 +389,7 @@ public class LuaParser implements LuaParserConstants {
                                   {if (true) return Exp.parensprefix(e);}
       break;
     default:
+      jj_la1[17] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -426,6 +447,7 @@ public class LuaParser implements LuaParserConstants {
                                                   {if (true) return Exp.functionop(lhs, a);}
       break;
     default:
+      jj_la1[18] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -462,6 +484,7 @@ public class LuaParser implements LuaParserConstants {
         el = ExpList();
         break;
       default:
+        jj_la1[19] = jj_gen;
         ;
       }
       jj_consume_token(70);
@@ -482,6 +505,7 @@ public class LuaParser implements LuaParserConstants {
                                                           {if (true) return FuncArgs.string(s);}
       break;
     default:
+      jj_la1[20] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -520,6 +544,7 @@ public class LuaParser implements LuaParserConstants {
         ;
         break;
       default:
+        jj_la1[21] = jj_gen;
         break label_7;
       }
       jj_consume_token(66);
@@ -581,6 +606,7 @@ public class LuaParser implements LuaParserConstants {
                                           {if (true) return e;}
       break;
     default:
+      jj_la1[22] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -618,6 +644,7 @@ public class LuaParser implements LuaParserConstants {
                           {if (true) return Str.longString(token.image);}
       break;
     default:
+      jj_la1[23] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -654,6 +681,7 @@ public class LuaParser implements LuaParserConstants {
                                              e=Exp.unaryexp(op,s);
       break;
     default:
+      jj_la1[24] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -690,6 +718,7 @@ public class LuaParser implements LuaParserConstants {
       pl = ParList();
       break;
     default:
+      jj_la1[25] = jj_gen;
       ;
     }
     jj_consume_token(70);
@@ -712,6 +741,7 @@ public class LuaParser implements LuaParserConstants {
                                     v=true;
         break;
       default:
+        jj_la1[26] = jj_gen;
         ;
       }
                                                    {if (true) return new ParList(nl,v);}
@@ -721,6 +751,7 @@ public class LuaParser implements LuaParserConstants {
                  {if (true) return new ParList(null,true);} ;
       break;
     default:
+      jj_la1[27] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -756,6 +787,7 @@ public class LuaParser implements LuaParserConstants {
                               tc.fields=fl;
       break;
     default:
+      jj_la1[28] = jj_gen;
       ;
     }
     jj_consume_token(75);
@@ -785,6 +817,7 @@ public class LuaParser implements LuaParserConstants {
       FieldSep();
       break;
     default:
+      jj_la1[29] = jj_gen;
       ;
     }
                                                                                                  {if (true) return fl;}
@@ -804,6 +837,7 @@ public class LuaParser implements LuaParserConstants {
                                                   {if (true) return TableField.keyedField(exp,rhs);}
       break;
     default:
+      jj_la1[30] = jj_gen;
       if (jj_2_7(2)) {
         name = jj_consume_token(NAME);
         jj_consume_token(65);
@@ -834,6 +868,7 @@ public class LuaParser implements LuaParserConstants {
                                                   {if (true) return TableField.listField(rhs);}
           break;
         default:
+          jj_la1[31] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -851,6 +886,7 @@ public class LuaParser implements LuaParserConstants {
       jj_consume_token(64);
       break;
     default:
+      jj_la1[32] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -919,6 +955,7 @@ public class LuaParser implements LuaParserConstants {
                 {if (true) return Lua.OP_OR;}
       break;
     default:
+      jj_la1[33] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -940,6 +977,7 @@ public class LuaParser implements LuaParserConstants {
                 {if (true) return Lua.OP_LEN;}
       break;
     default:
+      jj_la1[34] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -950,53 +988,49 @@ public class LuaParser implements LuaParserConstants {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_1(); }
     catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(0, xla); }
   }
 
   private boolean jj_2_2(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_2(); }
     catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(1, xla); }
   }
 
   private boolean jj_2_3(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_3(); }
     catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(2, xla); }
   }
 
   private boolean jj_2_4(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_4(); }
     catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(3, xla); }
   }
 
   private boolean jj_2_5(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_5(); }
     catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(4, xla); }
   }
 
   private boolean jj_2_6(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_6(); }
     catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(5, xla); }
   }
 
   private boolean jj_2_7(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_7(); }
     catch(LookaheadSuccess ls) { return true; }
-  }
-
-  private boolean jj_3R_55() {
-    if (jj_scan_token(89)) return true;
-    return false;
-  }
-
-  private boolean jj_3_4() {
-    if (jj_scan_token(66)) return true;
-    if (jj_scan_token(NAME)) return true;
-    return false;
+    finally { jj_save(6, xla); }
   }
 
   private boolean jj_3R_54() {
@@ -1501,6 +1535,17 @@ public class LuaParser implements LuaParserConstants {
     return false;
   }
 
+  private boolean jj_3R_55() {
+    if (jj_scan_token(89)) return true;
+    return false;
+  }
+
+  private boolean jj_3_4() {
+    if (jj_scan_token(66)) return true;
+    if (jj_scan_token(NAME)) return true;
+    return false;
+  }
+
   /** Generated Token Manager. */
   public LuaParserTokenManager token_source;
   SimpleCharStream jj_input_stream;
@@ -1511,6 +1556,28 @@ public class LuaParser implements LuaParserConstants {
   private int jj_ntk;
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
+  private int jj_gen;
+  final private int[] jj_la1 = new int[35];
+  static private int[] jj_la1_0;
+  static private int[] jj_la1_1;
+  static private int[] jj_la1_2;
+  static {
+      jj_la1_init_0();
+      jj_la1_init_1();
+      jj_la1_init_2();
+   }
+   private static void jj_la1_init_0() {
+      jj_la1_0 = new int[] {0x80000000,0x0,0x0,0x40000000,0x0,0x0,0x80000000,0x0,0x0,0x0,0x0,0xf800000,0x40000000,0x0,0x0,0x0,0x0,0x0,0xf800000,0xf800000,0xf800000,0x0,0xf800000,0xf800000,0xf800000,0x0,0x0,0x0,0xf800000,0x0,0x0,0xf800000,0x0,0x20000000,0x0,};
+   }
+   private static void jj_la1_init_1() {
+      jj_la1_1 = new int[] {0x62170,0x0,0x0,0x1000,0x0,0x0,0x22040,0x30,0x40100,0x2,0x1,0x60c8628,0x1000,0x0,0x0,0x0,0x0,0x40000,0x6000000,0x60c8628,0x6000000,0x0,0x60c8228,0x6000000,0x60c8628,0x40000,0x0,0x40000,0x60c8628,0x0,0x0,0x60c8628,0x0,0x800,0x400,};
+   }
+   private static void jj_la1_init_2() {
+      jj_la1_2 = new int[] {0x20,0x1,0x1,0x0,0x4,0x2,0x0,0x0,0x20,0x0,0x0,0x2002620,0x0,0x6,0x4,0x8,0x10,0x20,0x4b8,0x2002620,0x420,0x4,0x620,0x0,0x2002620,0x200,0x4,0x200,0x20026a0,0x5,0x80,0x2002620,0x5,0x1fff000,0x2002000,};
+   }
+  final private JJCalls[] jj_2_rtns = new JJCalls[7];
+  private boolean jj_rescan = false;
+  private int jj_gc = 0;
 
   /** Constructor with InputStream. */
   public LuaParser(java.io.InputStream stream) {
@@ -1522,6 +1589,9 @@ public class LuaParser implements LuaParserConstants {
     token_source = new LuaParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 35; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Reinitialise. */
@@ -1534,6 +1604,9 @@ public class LuaParser implements LuaParserConstants {
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 35; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Constructor. */
@@ -1542,6 +1615,9 @@ public class LuaParser implements LuaParserConstants {
     token_source = new LuaParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 35; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Reinitialise. */
@@ -1550,6 +1626,9 @@ public class LuaParser implements LuaParserConstants {
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 35; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Constructor with generated Token Manager. */
@@ -1557,6 +1636,9 @@ public class LuaParser implements LuaParserConstants {
     token_source = tm;
     token = new Token();
     jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 35; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Reinitialise. */
@@ -1564,6 +1646,9 @@ public class LuaParser implements LuaParserConstants {
     token_source = tm;
     token = new Token();
     jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 35; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -1572,9 +1657,21 @@ public class LuaParser implements LuaParserConstants {
     else token = token.next = token_source.getNextToken();
     jj_ntk = -1;
     if (token.kind == kind) {
+      jj_gen++;
+      if (++jj_gc > 100) {
+        jj_gc = 0;
+        for (int i = 0; i < jj_2_rtns.length; i++) {
+          JJCalls c = jj_2_rtns[i];
+          while (c != null) {
+            if (c.gen < jj_gen) c.first = null;
+            c = c.next;
+          }
+        }
+      }
       return token;
     }
     token = oldToken;
+    jj_kind = kind;
     throw generateParseException();
   }
 
@@ -1591,6 +1688,11 @@ public class LuaParser implements LuaParserConstants {
     } else {
       jj_scanpos = jj_scanpos.next;
     }
+    if (jj_rescan) {
+      int i = 0; Token tok = token;
+      while (tok != null && tok != jj_scanpos) { i++; tok = tok.next; }
+      if (tok != null) jj_add_error_token(kind, i);
+    }
     if (jj_scanpos.kind != kind) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
     return false;
@@ -1602,6 +1704,7 @@ public class LuaParser implements LuaParserConstants {
     if (token.next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
     jj_ntk = -1;
+    jj_gen++;
     return token;
   }
 
@@ -1622,12 +1725,75 @@ public class LuaParser implements LuaParserConstants {
       return (jj_ntk = jj_nt.kind);
   }
 
+  private java.util.List jj_expentries = new java.util.ArrayList();
+  private int[] jj_expentry;
+  private int jj_kind = -1;
+  private int[] jj_lasttokens = new int[100];
+  private int jj_endpos;
+
+  private void jj_add_error_token(int kind, int pos) {
+    if (pos >= 100) return;
+    if (pos == jj_endpos + 1) {
+      jj_lasttokens[jj_endpos++] = kind;
+    } else if (jj_endpos != 0) {
+      jj_expentry = new int[jj_endpos];
+      for (int i = 0; i < jj_endpos; i++) {
+        jj_expentry[i] = jj_lasttokens[i];
+      }
+      jj_entries_loop: for (java.util.Iterator it = jj_expentries.iterator(); it.hasNext();) {
+        int[] oldentry = (int[])(it.next());
+        if (oldentry.length == jj_expentry.length) {
+          for (int i = 0; i < jj_expentry.length; i++) {
+            if (oldentry[i] != jj_expentry[i]) {
+              continue jj_entries_loop;
+            }
+          }
+          jj_expentries.add(jj_expentry);
+          break jj_entries_loop;
+        }
+      }
+      if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
+    }
+  }
+
   /** Generate ParseException. */
   public ParseException generateParseException() {
-    Token errortok = token.next;
-    int line = errortok.beginLine, column = errortok.beginColumn;
-    String mess = (errortok.kind == 0) ? tokenImage[0] : errortok.image;
-    return new ParseException("Parse error at line " + line + ", column " + column + ".  Encountered: " + mess);
+    jj_expentries.clear();
+    boolean[] la1tokens = new boolean[90];
+    if (jj_kind >= 0) {
+      la1tokens[jj_kind] = true;
+      jj_kind = -1;
+    }
+    for (int i = 0; i < 35; i++) {
+      if (jj_la1[i] == jj_gen) {
+        for (int j = 0; j < 32; j++) {
+          if ((jj_la1_0[i] & (1<<j)) != 0) {
+            la1tokens[j] = true;
+          }
+          if ((jj_la1_1[i] & (1<<j)) != 0) {
+            la1tokens[32+j] = true;
+          }
+          if ((jj_la1_2[i] & (1<<j)) != 0) {
+            la1tokens[64+j] = true;
+          }
+        }
+      }
+    }
+    for (int i = 0; i < 90; i++) {
+      if (la1tokens[i]) {
+        jj_expentry = new int[1];
+        jj_expentry[0] = i;
+        jj_expentries.add(jj_expentry);
+      }
+    }
+    jj_endpos = 0;
+    jj_rescan_token();
+    jj_add_error_token(0, 0);
+    int[][] exptokseq = new int[jj_expentries.size()][];
+    for (int i = 0; i < jj_expentries.size(); i++) {
+      exptokseq[i] = (int[])jj_expentries.get(i);
+    }
+    return new ParseException(token, exptokseq, tokenImage);
   }
 
   /** Enable tracing. */
@@ -1636,6 +1802,47 @@ public class LuaParser implements LuaParserConstants {
 
   /** Disable tracing. */
   final public void disable_tracing() {
+  }
+
+  private void jj_rescan_token() {
+    jj_rescan = true;
+    for (int i = 0; i < 7; i++) {
+    try {
+      JJCalls p = jj_2_rtns[i];
+      do {
+        if (p.gen > jj_gen) {
+          jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
+          switch (i) {
+            case 0: jj_3_1(); break;
+            case 1: jj_3_2(); break;
+            case 2: jj_3_3(); break;
+            case 3: jj_3_4(); break;
+            case 4: jj_3_5(); break;
+            case 5: jj_3_6(); break;
+            case 6: jj_3_7(); break;
+          }
+        }
+        p = p.next;
+      } while (p != null);
+      } catch(LookaheadSuccess ls) { }
+    }
+    jj_rescan = false;
+  }
+
+  private void jj_save(int index, int xla) {
+    JJCalls p = jj_2_rtns[index];
+    while (p.gen > jj_gen) {
+      if (p.next == null) { p = p.next = new JJCalls(); break; }
+      p = p.next;
+    }
+    p.gen = jj_gen + xla - jj_la; p.first = token; p.arg = xla;
+  }
+
+  static final class JJCalls {
+    int gen;
+    Token first;
+    int arg;
+    JJCalls next;
   }
 
 }

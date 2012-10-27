@@ -669,9 +669,17 @@ For example, to parse a file and print all variable names, use code like:
 			}
 		} );
 	} catch ( ParseException e ) {
-		System.out.println( "parse failed: "+e );
+		System.out.println("parse failed: " + e.getMessage() + "\n"
+			+ "Token Image: '" + e.currentToken.image + "'\n"
+			+ "Location: " + e.currentToken.beginLine + ":" + e.currentToken.beginColumn 
+			         + "-" + e.currentToken.endLine + "," + e.currentToken.endColumn);
 	}
 </pre> 
+In luaj 2.0.3 error reporting was turned on in the parser so line numbers are avaiable for most parse exceptions.
+This example may be found in
+<pre>
+	examples/jse/SampleParser.java
+</pre>
 
 <p>
 See the <a href="http://luaj.sourceforge.net/api/2.0/org/luaj/vm2/ast/package-summary.html">org.luaj.vm2.ast package</a> javadoc for the API relating to the syntax tree that is produced. 
@@ -754,6 +762,7 @@ and LuaForge:
 <li>Add arithmetic metatag processing when left hand side is a number and right hand side has metatable </li>
 <li>Fix load(func) when mutiple string fragments are supplied by calls to func </li>
 <li>Allow access to public members of private inner classes where possible </li>
+<li>Turn on error reporting in LuaParser so line numbers ar available in ParseException </li>
 </ul></td></tr>
 </table></td></tr></table>
 
