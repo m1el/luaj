@@ -23,11 +23,11 @@ abstract public class AbstractUnitTests extends TestCase {
     private final String jar;
     private LuaTable _G;
 
-    public AbstractUnitTests(String zipfile, String dir) {
+    public AbstractUnitTests(String zipdir, String zipfile, String dir) {
     	URL zip = null;
 		zip = getClass().getResource(zipfile);
 		if ( zip == null ) {
-	    	File file = new File("test/junit/org/luaj/vm2/compiler/"+zipfile);
+	    	File file = new File(zipdir+"/"+zipfile);
 			try {
 		    	if ( file.exists() )
 					zip = file.toURI().toURL();
@@ -46,19 +46,32 @@ abstract public class AbstractUnitTests extends TestCase {
         _G = JsePlatform.standardGlobals();
     }
 
+    protected String pathOfFile(String file) {
+        return jar + dir + "/" + file;
+    }
+    
+    protected InputStream inputStreamOfPath(String path) throws IOException {
+        URL url = new URL(path);
+        return url.openStream();
+    }
+    
+    protected InputStream inputStreamOfFile(String file) throws IOException {
+    	return inputStreamOfPath(pathOfFile(file));
+    }
+    
     protected void doTest(String file) {
         try {
             // load source from jar
-            String path = jar + dir + "/" + file;
+            String path = pathOfFile(file);
             byte[] lua = bytesFromJar(path);
 
             // compile in memory
             InputStream is = new ByteArrayInputStream(lua);
-            Prototype p = LuaC.instance.compile(is, "@" + dir + "/" + file);
+            Prototype p = LuaC.instance.compile(is, "@" + file);
             String actual = protoToString(p);
 
             // load expected value from jar
-            byte[] luac = bytesFromJar(path + "c");
+            byte[] luac = bytesFromJar(path.substring(0, path.length()-4)+".lc");
             Prototype e = loadFromBytes(luac, file);
             String expected = protoToString(e);
 
@@ -83,8 +96,7 @@ abstract public class AbstractUnitTests extends TestCase {
     }
 
     protected byte[] bytesFromJar(String path) throws IOException {
-        URL url = new URL(path);
-        InputStream is = url.openStream();
+        InputStream is = inputStreamOfPath(path);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[2048];
         int n;
