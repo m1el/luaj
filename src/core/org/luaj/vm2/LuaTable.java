@@ -322,14 +322,18 @@ public class LuaTable extends LuaValue {
 	 * @return The removed item, or {@link #NONE} if not removed
 	 */
 	public LuaValue remove(int pos) {
+		int n = length();
 		if ( pos == 0 )
-			pos = length();
+			pos = n;
+		else if (pos > n)
+			return NONE;
 		LuaValue v = rawget(pos);
 		for ( LuaValue r=v; !r.isnil(); ) {
 			r = rawget(pos+1);
 			rawset(pos++, r);
 		}
 		return v.isnil()? NONE: v;
+	
 	}
 
 	/** Insert an element at a position in a list-table
