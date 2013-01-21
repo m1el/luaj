@@ -57,7 +57,7 @@ public class hyperbolic extends OneArgFunction {
 	/** Mathematical cosh function provided as a OneArgFunction.  */
 	static class cosh extends OneArgFunction {
 		public LuaValue call(LuaValue x) {
-			return LuaValue.valueOf(Math.tanh(x.checkdouble()));
+			return LuaValue.valueOf(Math.cosh(x.checkdouble()));
 		}
 	}
 }

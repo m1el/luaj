@@ -80,7 +80,7 @@ import org.luaj.vm2.LuaValue;
  *	
  *	static class cosh extends OneArgFunction {
  *		public LuaValue call(LuaValue x) {
- *			return LuaValue.valueOf(Math.tanh(x.checkdouble()));
+ *			return LuaValue.valueOf(Math.cosh(x.checkdouble()));
  *		}
  *	}
  *}
