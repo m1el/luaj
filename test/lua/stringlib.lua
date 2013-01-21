@@ -174,7 +174,7 @@ local function fmterr(...)
 	if r then
 		return s
 	else
-		s = string.gsub(s, "stdin:%d+:%s*", "")
+		s = string.gsub(s, "stringlib.lua:%d+:%s*", "")
 		return s
 	end
 end

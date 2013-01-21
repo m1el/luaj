@@ -19,17 +19,17 @@ t[2] = [[
 	local f2
 	f2 = function() return 1 end
 ]]
-for i = 3, 199 do
+for i = 3, 149 do
 	t[i] = template:gsub("<([^>]+)>", function(s)
 		local c = assert(loadstring('return '..s), 'could not compile: '..s)
 		setfenv(c, { i = i })
 		return c()
 	end)
 end
-t[200] = [[
+t[150] = [[
 	print("5th fibonacci number is", f5())
 	print("10th fibonacci number is", f10())
-	print("199th fibonacci number is", f199())
+	print("149th fibonacci number is", f149())
 ]]
 
 local s = table.concat(t)
