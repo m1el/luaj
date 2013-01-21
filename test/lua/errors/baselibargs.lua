@@ -18,7 +18,7 @@ checkallerrors('collectgarbage',{{aboolean, atable, afunction, athread}},'string
 -- dofile
 banner('dofile')
 --checkallpass('dofile', {})
-checkallpass('dofile', {{'test/lua/errors/args.lua'}})
+checkallpass('dofile', {{'args.lua'}})
 checkallerrors('dofile', {{'foo.bar'}}, 'cannot open foo.bar')
 checkallerrors('dofile', {nonstring}, 'bad argument')
 
