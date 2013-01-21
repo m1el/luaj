@@ -279,7 +279,7 @@ public class LuaString extends LuaValue {
 	public LuaNumber checknumber(String msg) {
 		double d = scannumber(10);
 		if ( Double.isNaN(d) )
-			argerror("number");
+			error(msg);
 		return valueOf(d);
 	}
 	public LuaValue tonumber() {
