@@ -56,40 +56,46 @@ import org.luaj.vm2.LuaValue;
  * <p> 
  * For example, the following code will implement a library called "hyperbolic" 
  * with two functions, "sinh", and "cosh":
- * <pre> {@code 
+ <pre> {@code 
  * import org.luaj.vm2.LuaValue;
- * public class hyperbolic extends org.luaj.vm2.lib.OneArgFunction {
- * 	public hyperbolic() {}
- * 	public LuaValue call(LuaValue arg) {
- * 		switch ( opcode ) {
- * 		case 0: {
- * 			LuaValue t = tableOf();
- * 			this.bind(t, hyperbolic.class, new String[] { "sinh", "cosh" }, 1 );
- * 			env.set("hyperbolic", t);
- * 			return t;
- * 		}
- * 		case 1: return valueOf(Math.sinh(arg.todouble()));
- * 		case 2: return valueOf(Math.cosh(arg.todouble()));
- * 		default: return error("bad opcode: "+opcode);
- * 		}
- * 	}
- * } 
- * }</pre>
- * The default constructor is both to instantiate the library 
- * in response to {@code require 'hyperbolic'} statement, 
- * provided it is on Javas class path, 
- * and to instantiate copies of the {@code hyperbolic} 
- * class when initializing library instances. . 
- * The instance returned by the default constructor will be invoked
- * as part of library loading.  
- * In response, it creates two more instances, one for each library function,  
- * in the body of the {@code switch} statement {@code case 0} 
- * via the {@link #bind(LuaValue, Class, String[], int)} utility method.
- * It also registers the table in the globals via the {@link #env} 
- * local variable, which should be the global environment unless 
- * it has been changed.
- * {@code case 1} and {@code case 2} will be called when {@code hyperbolic.sinh}
- * {@code hyperbolic.sinh} and {@code hyperbolic.cosh} are invoked. 
+ * import org.luaj.vm2.lib.OneArgFunction;
+ * 
+ * public class hyperbolic extends OneArgFunction {
+ *
+ *	public hyperbolic() {}
+ *
+ *	public LuaValue call(LuaValue libname) {
+ *		LuaValue library = tableOf();
+ *		library.set( "sinh", new sinh() );
+ *		library.set( "cosh", new cosh() );
+ *		env.set( "hyperbolic", library );
+ *		return library;
+ *	}
+ *
+ *	static class sinh extends OneArgFunction {
+ *		public LuaValue call(LuaValue x) {
+ *			return LuaValue.valueOf(Math.sinh(x.checkdouble()));
+ *		}
+ *	}
+ *	
+ *	static class cosh extends OneArgFunction {
+ *		public LuaValue call(LuaValue x) {
+ *			return LuaValue.valueOf(Math.tanh(x.checkdouble()));
+ *		}
+ *	}
+ *}
+ *</pre>
+ * The default constructor is used to instantiate the library 
+ * in response to {@code require 'hyperbolic'} statement,
+ * provided it is on Javas class path. 
+ * This instance is then invoked with the name supplied to require() 
+ * as the only argument, and library should initialized whatever global
+ * data it needs to and place it into the environment if needed.
+ * In this case, it creates two function, 'sinh', and 'cosh', and puts 
+ * them into a global table called 'hyperbolic.'
+ * It placed the library table into the globals via the {@link #env} 
+ * local variable which corresponds to the globals that apply when the
+ * library is loaded.
  * <p>
  * To test it, a script such as this can be used:
  * <pre> {@code
@@ -107,14 +113,14 @@ import org.luaj.vm2.LuaValue;
  * <pre> {@code
  * t	table: 3dbbd23f
  * hyperbolic	table: 3dbbd23f
- * k,v	cosh	cosh
- * k,v	sinh	sinh
+ * k,v	cosh	function: 3dbbd128
+ * k,v	sinh	function: 3dbbd242
  * sinh(.5)	0.5210953
  * cosh(.5)	1.127626
  * }</pre> 
  * <p> 
  * See the source code in any of the library functions 
- * such as {@link BaseLib} or {@link TableLib} for specific examples.  
+ * such as {@link BaseLib} or {@link TableLib} for other examples.  
  */
 abstract public class LibFunction extends LuaFunction {
 	
