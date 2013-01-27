@@ -481,8 +481,8 @@ public class LuaString extends LuaValue {
 	 * @return index of first match found, or -1 if not found.
 	 */
 	public int indexOf( byte b, int start ) {
-		for ( int i=0, j=m_offset+start; i < m_length; ++i ) {
-			if ( m_bytes[j++] == b )
+		for ( int i=start; i < m_length; ++i ) {
+			if ( m_bytes[m_offset+i] == b )
 				return i;
 		}
 		return -1;
@@ -496,11 +496,10 @@ public class LuaString extends LuaValue {
 	 */
 	public int indexOf( LuaString s, int start ) {
 		final int slen = s.length();
-		final int limit = m_offset + m_length - slen;
-		for ( int i = m_offset + start; i <= limit; ++i ) {
-			if ( equals( m_bytes, i, s.m_bytes, s.m_offset, slen ) ) {
+		final int limit =  m_length - slen;
+		for ( int i=start; i <= limit; ++i ) {
+			if ( equals( m_bytes, m_offset+i, s.m_bytes, s.m_offset, slen ) )
 				return i;
-			}
 		}
 		return -1;
 	}
@@ -512,11 +511,10 @@ public class LuaString extends LuaValue {
 	 */
 	public int lastIndexOf( LuaString s ) {
 		final int slen = s.length();
-		final int limit = m_offset + m_length - slen;
-		for ( int i = limit; i >= m_offset; --i ) {
-			if ( equals( m_bytes, i, s.m_bytes, s.m_offset, slen ) ) {
+		final int limit =  m_length - slen;
+		for ( int i=limit; i >= 0; --i ) {
+			if ( equals( m_bytes, m_offset+i, s.m_bytes, s.m_offset, slen ) )
 				return i;
-			}
 		}
 		return -1;
 	}

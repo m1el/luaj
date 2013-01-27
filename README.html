@@ -57,8 +57,8 @@ Luaj is a lua interpreter based on the 5.1.x version of lua with the following g
 <li>Complete set of libraries and tools for integration into real-world projects.
 <li>Dependable due to sufficient unit testing of vm and library features. 
 </ul>
-
 <h2>Differences with 1.0</h2>
+
 In addition to the basic goals of luaj, version 2.0 is aimed 
 at improving on the 1.0 vm in the following aspects. 
 <ul>
@@ -756,6 +756,7 @@ and LuaForge:
 <li>Enhance javadoc, put it <a href="docs/api/index.html">in distribution</a> and <a href="http://luaj.sourceforge.net/api/2.0/index.html">on line</a></li>
 <li>Major refactor of luajava type coercion logic, improve method selection.</li> 
 <li>Add lib/luaj-sources-2.0.2.jar for easier integration into an IDE such as Netbeans </li>
+
 <tr valign="top"><td>&nbsp;&nbsp;<b>2.0.3</b></td><td><ul>
 <li>Improve coroutine state logic including let unreferenced coroutines be garbage collected </li>
 <li>Fix lua command vararg values passed into main script to match what is in global arg table </li>
@@ -765,6 +766,10 @@ and LuaForge:
 <li>Turn on error reporting in LuaParser so line numbers ar available in ParseException </li>
 <li>Improve compatibility of table.remove() </li>
 <li>Disallow base library setfenv() calls on Java functions </li>
+
+<tr valign="top"><td>&nbsp;&nbsp;<b>2.0.4</b></td><td><ul>
+<li>Fix bug 3495802 to return correct offset of substrings from string.find().</li>
+
 </ul></td></tr>
 </table></td></tr></table>
 

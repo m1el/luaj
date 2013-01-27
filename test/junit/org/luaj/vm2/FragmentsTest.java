@@ -579,5 +579,13 @@ public class FragmentsTest extends TestSuite {
 			        "    end\n" +
 			        "end\n");
 		}
+		
+		public void testFindWithOffset() {
+			runFragment(LuaValue.varargsOf(LuaValue.valueOf(8), LuaValue.valueOf(5)),
+					"string = \"abcdef:ghi\"\n" +
+					"substring = string:sub(3)\n" +
+					"idx = substring:find(\":\")\n" +
+					"return #substring, idx\n");
+		}
 	}
 }
